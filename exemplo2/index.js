@@ -1,17 +1,16 @@
 (function(){
-    var c = document.getElementsByTagName("canvas")[0];
-    var MAX_WIDTH= 800;
-    c.style = "width='"+MAX_WIDTH+"px'";
-    var ctx = c.getContext("2d");
-    var x=0;
-    function draw(){
-        ctx.clearRect(0, 0, MAX_WIDTH, 1000);
-        ctx.beginPath();
-        ctx.arc(x,100,20,0,2*Math.PI);
-        ctx.stroke();
-        ctx.fill();
-        ctx.closePath();
-        x+=10;
+    var i=0;
+    function addObject(){
+        $('body').append("<div id='div_"+i+"' class='obj'><span>"+i+"</span></div>");
+        var myBox = document.getElementById('div_'+i);
+        myBox.addEventListener('webkitAnimationEnd',function( event ) { myBox.style.display = 'none'; }, false);
+        i++;
     }
-    window.setInterval(draw,100);
+
+    $('#desenha').asEventStream('click').bufferingThrottle(500).onValue(addObject);
+
+    //$('body').asEventStream('click').bufferWithTimeOrCount(500,3).filter(function(events){return events.length===3;}).onValue(addObject);
+
+
+    //$('body').asEventStream('keypress').bufferWithTimeOrCount(500,3).filter(function(events){return events.length===3;}).onValue(addObject);
 }());
